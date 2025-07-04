@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Automóvil</title>
+</head>
+<body>
+    <h1>Detalle del Automóvil</h1>
+    <ul>
+        <li><strong>Patente:</strong> {{ auto.patente }}</li>
+        <li><strong>Marca:</strong> {{ auto.marca }}</li>
+        <li><strong>Modelo:</strong> {{ auto.modelo }}</li>
+        <li><strong>Año:</strong> {{ auto.anio }}</li>
+        <li><strong>Kilometraje:</strong> {{ auto.kilometraje }} km</li>
+    </ul>
+    <a href="{% url 'listado_automoviles' %}">Volver al listado</a>
+</body>
+</html>

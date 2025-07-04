@@ -1,0 +1,46 @@
+/* static/mi_aplicacion/styles.css */
+
+.app {
+    width: 100vw;
+    background-color: #a01616;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+.cabecera{
+    width: 100vw;
+    height: 20vh;
+    background-color: #3f5f9b;
+    margin: 0;
+    
+    display: flex;
+    flex-direction: row;
+    
+}
+
+table{
+    display: flex;
+    flex-direction: column;
+    align-content: baseline;
+    
+    margin: 20px;
+    caption{
+        margin: 20px;
+        text-align: left;
+        color: teal;
+        font-size: 30px;
+    }
+    td{
+        
+        font-size: 15px;
+    }
+    tr:nth-child(odd){                      /*Color filas impares*/
+        background-color: antiquewhite;
+        color: teal;
+    }
+    tr:nth-child(even){                     /*Color filas pares*/
+        background-color: teal;
+        color: antiquewhite;
+    }
+}

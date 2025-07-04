@@ -1,0 +1,27 @@
+<!-- templates/mi_template.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'operacion/style.css' %}">
+
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+
+</head>
+<body class="menu">
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">Automoviles</a>
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">Clientes</a>
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">VTV</a>
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">Seguros</a>
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">Patentes</a>
+    <a href="http://127.0.0.1:8080/operacion/automoviles/">Mantenimiento</a>
+
+
+
+</body>
+</html>
