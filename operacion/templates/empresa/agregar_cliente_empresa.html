@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style_form.css' %}">
+    <title>Agregar Empresas</title>
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+
+    
+    <a href="{% url 'cliente_empresa' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Agregar Cliente</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!-- templates/seguros/infracciones/infraccion_list.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Listado de Infracciones</title>
+</head>
+<body class="app">
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    <a href="{% url 'home' %}" class="btn-atras">
+        <img src="{% static 'operacion/img/atras.svg' %}">
+    </a>
+    <h1>Listado de Infracciones</h1>
+    <table>
+        <tr>
+            <th>Auto</th>
+            <th>Infracción</th>
+            <th>Lugar</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <!-- <th>Acciones</th> -->
+        </tr>
+        
+        {% for infraccion in infracciones %}
+            <tr>
+                <td>{{ infraccion.auto }}</td>
+                <td>{{ infraccion.infraccion }}</td>
+                <td>{{ infraccion.lugar }}</td>
+                <td>$ {{ infraccion.monto }}</td>
+                <td>{{ infraccion.fecha }}</td>
+
+                <td class="acciones">
+                    <form method="post" action="{% url 'eliminar_infraccion' infraccion.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt="Eliminar">
+                        </button>
+                    </form>
+                    <form method="get" action="{% url 'editar_infraccion' infraccion.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <img src="{% static 'operacion/img/editar_blanco.svg' %}" alt="Editar">
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No hay infracciones registradas.</td>
+            </tr>
+        {% endfor %}
+        
+    </table>
+    <a href="{% url 'agregar_infraccion' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+    </a>
+</body>
+</html>

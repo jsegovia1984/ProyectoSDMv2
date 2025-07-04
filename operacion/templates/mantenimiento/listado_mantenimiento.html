@@ -1,0 +1,80 @@
+
+<!-- templates/mi_template.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Listado de mantenimientos</title>
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Listado de mantenimientos</h1>
+    <form method="get" action="">
+        <label class="filtro-label" for="estado_vtv">Filtrar por Fecha:</label>  <!--filtrar por fecha-->
+        <select class="filtro-opcion" name="estado_vtv" id="estado_vtv" onchange="this.form.submit()">
+            <option  value="">Todo</option>
+            {% for estado in estados_vtv %}
+                <option value="{{ estado.estado }}" {% if estado.estado == estado_seleccionado %}selected{% endif %}>
+                    {{ estado.estado }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    <form class="filtro-fecha" method="get" action="">
+        <label class="filtro-label" for="fecha_turno">Filtrar por Fecha:</label>
+        <input type="date" name="fecha_turno" id="fecha_turno" value="{{ request.GET.fecha_turno }}">
+        <button type="submit">Filtrar</button>
+    </form>
+    <table>
+            <tr>
+                <th>Vehículo</th>
+                <th>Servicio realizado</th>
+                <th>Fecha inicio de servicio </th>
+                <th>Fecha fin de servicio </th>
+                <th>Km servicio</th>
+                <th>Costo servicio</th>
+                <!-- <th>Acciones</th> -->
+
+            </tr>
+        
+            {% for mantenimiento in mantenimientos %}
+                <tr>
+                    <td>{{ mantenimiento.vehiculo }}</td>
+                    <td>{{ mantenimiento.servicio_realizado }}</td>
+                    <td>{{ mantenimiento.fecha_servicio_inicio }}</td>
+                    <td>{{ mantenimiento.fecha_servicio_fin }}</td>
+                    <td>{{ mantenimiento.km_servicio }}</td>
+                    <td>{{ mantenimiento.costo_servicio }}</td>
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_mantenimiento' mantenimiento.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_mantenimiento' mantenimiento.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No hay Mantenimientos registrados.</td>
+                </tr>
+            {% endfor %}
+        
+    </table>
+    <a href="{% url 'agregar_mantenimiento' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+        <form action="{% url 'agregar_mantenimiento' %}" method="get">
+            {% csrf_token %}
+         </form>
+    </a>
+</body>
+</html>

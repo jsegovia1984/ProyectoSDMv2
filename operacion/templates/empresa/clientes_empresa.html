@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Listado de Clientes</title>
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Listado de Empresas</h1>
+    <table>
+            <tr>
+                <th>Nombre</th>
+                <th>CUIT</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <!-- <th>Acciones</th> -->
+
+            </tr>
+        
+            {% for cliente in clientes_empresa %}
+                <tr>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.cuit }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.email }}</td>
+
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_empresa' cliente.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_empresa' cliente.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No hay clientes registrados.</td>
+                </tr>
+            {% endfor %}
+        
+    </table>
+    <a href="{% url 'agregar_empresa' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+        <form action="{% url 'agregar_empresa' %}" method="get">
+            {% csrf_token %}
+         </form>
+    </a>
+</body>
+</html>

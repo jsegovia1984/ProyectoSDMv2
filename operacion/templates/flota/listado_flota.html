@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Flotas</title>
+</head>
+<body class="app">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Flotas</h1>
+
+    <!-- FILTRO POR DISPONIBILIDAD DE FLOTA -->
+    <form method="get" action="{{ request.path }}">
+        <label class="filtro-label" for="flota_disponible">Filtrar por Disponibilidad:</label>
+        <select class="filtro-opcion" name="flota_disponible"  onchange="this.form.submit()">
+            <option  value="">Todos</option>
+            <!-- {% for f in flota %} -->
+                <option value="{{ f.disponible }}" {% if f.disponible == f_seleccionado %}selected{% endif %}>
+                    {% if f.disponible %}Disponible{% else %}No Disponible{% endif %}
+                     <!-- {{ f.disponible }} -->
+                </option>
+            <!-- {% endfor %} -->
+        </select>
+    </form>
+
+   
+
+    <table>      
+            <tr>
+                <th scope="col">Número</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cliente</th>      
+                <th scope="col">Disponibilidad</th>      
+
+            </tr>
+            {% for f in flota %}
+            <tr>
+                <td><a class="enlace" href="{% url 'detalle_flota' f.id%}">{{ f.id }}</a></td>
+                <td>{{ f.descripcion }}</td>
+                <td>{{ f.cliente }}</td>
+                <td>{% if f.disponible %}
+                    <img src="{% static 'operacion/img/check.svg' %}" alt="Disponible">
+                {% else %}
+                    <img src="{% static 'operacion/img/cancel.svg' %}" alt="No Disponible">
+                    
+                {% endif %}
+                </td>
+                <td class="acciones">
+                    {% if f.id %}
+                    <form method="post" action="{% url 'eliminar_flota' f.id%}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    <form method="get" action="{% url 'editar_flota' f.id%}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    {% else %}
+                    <p>ID no válido</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+    <a href="{% url 'agregar_flota' %}" class="btn-flotante"><img src="{% static 'operacion/img/agregar.svg' %}"></a>
+    
+</body>
+</html>

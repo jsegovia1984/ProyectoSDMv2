@@ -7,46 +7,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
     <title>Listado de Clientes</title>
 </head>
-<body>
+<body class="app">
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
     <h1>Listado de Clientes</h1>
-    
-    <form action="{% url 'agregar_cliente' %}" method="get">
-        {% csrf_token %}
- 
-         <button type="submit" class="add-btn">Agregar Cliente</button>
-     </form>
-    <table border="1">
-        <thead>
+    <table>
             <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
+                <th>Razón Social</th>
                 <th>DNI</th>
                 <th>CUIL</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
                 <th>Email</th>
-                <th>Acciones</th>
+                <!-- <th>Acciones</th> -->
 
             </tr>
-            
-        </thead>
-        <tbody>
+        
             {% for cliente in clientes %}
                 <tr>
-                    <td>{{ cliente.nombre }}</td>
-                    <td>{{ cliente.apellido }}</td>
+                    <td>{{ cliente.razon_social }}</td>
                     <td>{{ cliente.dni }}</td>
                     <td>{{ cliente.cuil }}</td>
                     <td>{{ cliente.direccion }}</td>
                     <td>{{ cliente.telefono }}</td>
                     <td>{{ cliente.email }}</td>
-                    <td>
-                        <a href="{% url 'eliminar_cliente' cliente.pk %}">Eliminar</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'editar_cliente' cliente.id %}">Editar</a> <!-- Botón de edición -->
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_cliente' cliente.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_cliente' cliente.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
                     </td>
                 </tr>
             {% empty %}
@@ -54,7 +54,15 @@
                     <td colspan="7">No hay clientes registrados.</td>
                 </tr>
             {% endfor %}
-        </tbody>
+        
     </table>
+    <a href="{% url 'agregar_cliente' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+        <form action="{% url 'agregar_cliente' %}" method="get">
+            {% csrf_token %}
+         </form>
+    </a>
+    <!-- <script src="{% static 'operacion/js/test.js' %}"></script> -->
+
 </body>
 </html>

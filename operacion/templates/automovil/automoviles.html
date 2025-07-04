@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Automóviles</title>
+</head>
+<body class="app">
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Listado de Automóviles</h1>
+
+    <form method="get" action="">
+        <label class="filtro-label" for="estado_vtv">Filtrar por Estado de VTV:</label>
+        <select class="filtro-opcion" name="estado_vtv" id="estado_vtv" onchange="this.form.submit()">
+            <option  value="">Todos</option>
+            {% for estado in estados_vtv %}
+                <option value="{{ estado.estado }}" {% if estado.estado == estado_seleccionado %}selected{% endif %}>
+                    {{ estado.estado }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label class="filtro-label" for="flota_id">Filtrar por Flota:</label>
+        <select class="filtro-opcion" name="flota_id" id="flota_id" onchange="this.form.submit()">
+            <option value="">Todas</option>
+            {% for flota in flotas %}
+                <option value="{{ flota.id }}" {% if flota.id|stringformat:"s" == flota_seleccionada %}selected{% endif %}>
+                    {{ flota.descripcion }}
+                </option>
+            {% endfor %}
+        </select>
+
+    </form>
+    
+    <table>      
+            <tr>
+                <th scope="col">Nº Patente</th>
+                <th scope="col">Modelo/Marca</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Flota</th>
+                <th scope="col">VTV</th>    
+                <th scope="col">Póliza</th>
+                <th scope="col">Cantidad de Siniestros</th>    
+
+            </tr>
+            {% for auto in autos %}
+            <tr>
+                <td><a href="{% url 'detalle_automovil' auto.id %}" class="enlace">{{ auto.patente }}</a></td>
+                <td>{{ auto.marca }}</td>
+                <td>{{ auto.Estado }}</td>
+                <td>{% if auto.flota %}
+                    {{ auto.flota }}
+                    {% else %}
+                    <p>Sin asignar</p>
+                    {% endif %}
+                    </td>
+                <td>{{ auto.vtv }}</td>
+                <td>{{ auto.poliza }}</td>
+
+                <td>{{ auto.cantidad_de_sinistros }}</td>
+
+                
+
+                <td class="acciones">
+                    {% if auto.id %}
+                    <form method="post" action="{% url 'eliminar_automovil' auto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    <form method="get" action="{% url 'editar_automovil' auto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    {% else %}
+                    
+                    <p>ID no válido</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+    <a href="{% url 'alta_automovil' %}" class="btn-flotante"><img src="{% static 'operacion/img/agregar.svg' %}"></a>
+    
+</body>
+</html>

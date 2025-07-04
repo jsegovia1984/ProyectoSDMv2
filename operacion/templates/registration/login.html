@@ -1,25 +1,79 @@
 
 {% load static %}
 
-{% block content %}
-  <h2>Iniciar sesión</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static './style_form.css' %}">    
+
+  <title>Login</title>
+</head>
+<body class="app-login">
+  <div class="cont-login">
+    <img src="{% static 'operacion/img/LOGO_SDM_blanco.png' %}">
+
+    <form class="form-login" method="post">
+      <h2>Inicio de Sesión</h2>
+    
+      <form method="post">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <label for="id_username">Usuario:</label>
+        <input class="input-login" type="text" name="username" id="id_username" required>
   
-  <form method="post">
-    {% csrf_token %}
+        <label for="id_password">Contraseña:</label>
+        <div class="password-container">
+          <input class="input-login" type="password" name="password" id="id_password" required>
+          <span class="toggle-password" onclick="togglePassword()">
+            <img id="eyeIcon" class="visible" src="{% static 'operacion/img/eye_open.svg' %}">
+          </span>
+          <script>
+            function togglePassword() {
+                const passwordInput = document.getElementById("id_password");
+                const eyeIcon = document.getElementById("eyeIcon");
+        
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    eyeIcon.src = "{% static 'operacion/img/eye_closed.svg' %}"; // Ojo cerrado
+                    eyeIcon.alt = "Ocultar contraseña";
+                } else {
+                    passwordInput.type = "password";
+                    eyeIcon.src = "{% static 'operacion/img/eye_open.svg' %}"; // Ojo abierto
+                    eyeIcon.alt = "Mostrar contraseña";
+                }
+            }
+          </script>
+        
+        </div>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+      <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById("id_password");
+            const eyeIcon = document.getElementById("eyeIcon");
     
-    {% if form.errors %}
-      <ul>
-        {% for field in form %}
-          {% for error in field.errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        {% endfor %}
-      </ul>
-    {% endif %}
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.src = "{% static 'operacion/img/eye_closed.svg' %}"; // Ojo cerrado
+                eyeIcon.alt = "Ocultar contraseña";
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.src = "{% static 'operacion/img/eye_open.svg' %}"; // Ojo abierto
+                eyeIcon.alt = "Mostrar contraseña";
+            }
+          }
+      </script>
     
-    {{ form.as_p }}
-    
-    <button type="submit">Iniciar sesión</button>
-  </form>
+      
+      <!-- <a href="{% url 'listado_automoviles' %}">Registrar nuevo Usuario</a> -->
+    </form>
+  </div>
   
-{% endblock %}
+  
+  
+</body>
+</html>
+
+  

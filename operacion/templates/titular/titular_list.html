@@ -1,0 +1,59 @@
+
+<!-- templates/mi_template.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Listado de Titulares</title>
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Listado de Titulares</h1>
+    <table>
+            <tr>
+                <th>Razón Social</th>
+                <th>CUIT</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+
+            </tr>
+        
+            {% for titular in titulares %}
+                <tr>
+                    <td>{{ titular.razon_social }}</td>
+                    <td>{{ titular.cuit }}</td>
+                    <td>{{ titular.direccion }}</td>
+                    <td>{{ titular.telefono }}</td>
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_titular' titular.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_titular' titular.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No hay Titulares registrados.</td>
+                </tr>
+            {% endfor %}
+        
+    </table>
+    <a href="{% url 'agregar_titular' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+        <form action="{% url 'agregar_titular' %}" method="get">
+            {% csrf_token %}
+         </form>
+    </a>
+</body>
+</html>

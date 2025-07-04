@@ -6,7 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'operacion/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style_home.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <title>
         {% block title %}{% endblock %}
@@ -14,14 +17,169 @@
 
 </head>
 <body class="menu">
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">Automoviles</a>
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">Clientes</a>
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">VTV</a>
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">Seguros</a>
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">Patentes</a>
-    <a href="http://127.0.0.1:8080/operacion/automoviles/">Mantenimiento</a>
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    <div class="cont-home">
+        <!-- <div class="cont-lateral">
+            <a href="#home">Home</a>
+            <a href="#gestion">Gestión</a>
+            <a href="#documentacion">Documentación</a>
+            <a href="#estadisticas">Estadísticas</a>
+            
+        </div> -->
+        <div class="cont-principal">
+            <a id="home">
+            <section>
+                <h1>Notas</h1>
+                <hr>
+                <!-- REFERENCIAS -->
+                 <p class="referencias">
+                    Referencias: 
+                    <img class="img-ref" src="{% static 'operacion/img/red-circle.svg' %}" alt="">Prioridad ALTA   
+                    <img class="img-ref" src="{% static 'operacion/img/orange-circle.svg' %}" alt="">Prioridad MEDIA   
+                    <img class="img-ref" src="{% static 'operacion/img/green-circle.svg' %}" alt="">Prioridad BAJA
+                </p>
+                <!-- NOTA -->
+                <div id="notas" class="contenedor">
+                    {% for nota in notas %}
+                        <article class="art-notas">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <p class="card-text-icon">
+                                    {% if nota.prioridad  == 'alta' %}
+                                        <img class="img-nota" src="{% static 'operacion/img/red-circle.svg' %}" alt="">
+                                    {% elif nota.prioridad == 'media' %}
+                                        <img class="img-nota" src="{% static 'operacion/img/orange-circle.svg' %}" alt="">
+                                    {% else %}
+                                        <img class="img-nota" src="{% static 'operacion/img/green-circle.svg' %}" alt="">
+                                    {% endif %}  
+                                </p>{{ nota.titulo }}</h5>
+                                <hr class="hr-notas">
+                                <p class="card-text">{{ nota.descripcion }}</p>
+                                <p class="card-text"><small class="text-muted">{{ nota.fecha }}</small></p>
+                                
+                            </div>
+                            {% if nota.id %}
+                            <form method="post" action="{% url 'eliminar_nota' nota.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-eliminar"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                            </form>
+                            {% else %}
+                            <p>ID no válido</p>
+                            {% endif %}
+                                </article>
+                            {% endfor %}
+                            <button type="button" class="btn-nota" data-bs-toggle="modal" data-bs-target="#notaModal">
+                                <img src="{% static 'operacion/img/agregar.svg' %}">
+                            </button>
+                        </div>
+                <!-- AGREGAR NOTA -->
+                <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="popup-nota">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">Nueva Nota</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="notaForm">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="titulo" class="form-label">Título</label>
+                                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="descripcion" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="fecha" class="form-label">Fecha y Hora</label>
+                                        <input type="datetime-local" class="form-control" id="fecha" name="fecha" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="prioridad" class="form-label">Prioridad</label>
+                                        <select class="form-select" id="prioridad" name="prioridad">
+                                            <option value="baja">Baja</option>
+                                            <option value="media" selected>Media</option>
+                                            <option value="alta">Alta</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-popup" type="submit" >Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </section>
+            </a>
+            
+
+            <!-- <a id="gestion">
+                <section>
+                    <h1>Gestión</h1>
+                    <hr>
+                    <div class="contenedor">
+                        <button><a  href="{% url 'listado_automoviles' %}">Automóviles</a></button>
+                        <button><a  href="">Alquileres</a></button>
+                        <button><a  href="{% url 'listado_clientes' %}">Clientes</a></button>        
+                    </div>
+                </section>
+            </a>
+            <a id="documentacion">
+                <section>
+                    <h1>Documentación</h1>
+                    <hr>
+                    <div class="contenedor">
+                        <button><a  href="{% url 'listado_automoviles' %}">Facturación</a></button>
+                        <button><a  href="{% url 'listado_automoviles' %}">Contratos</a></button>
+                        <button><a  href="{% url 'listado_clientes' %}">Bla</a></button>
+                    </div>
+                </section>
+            </a>
+            <a id="estadisticas">
+                <section>
+                    <h1>Estadísticas e Informes</h1>
+                    <hr>
+                    <div class="contenedor">
+                        <button><a  href="{% url 'listado_automoviles' %}">Facturación</a></button>
+                        <button><a  href="{% url 'listado_automoviles' %}">Contratos</a></button>
+                        <button><a  href="{% url 'listado_clientes' %}">Bla</a></button>
+                    </div>
+                </section>
+            </a> -->
+            
+        </div>
+    </div>
+    
 
 
-
+    <a href="#home" class="btn-flotante"><img src="{% static 'operacion/img/atras.svg' %}"></a>
 </body>
+
+<script>
+    document.getElementById("notaForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        let formData = new FormData(this);
+    
+        fetch("{% url 'crear_nota' %}", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Nota guardada con éxito");
+                location.reload();
+            } else {
+                alert("Hubo un error");
+            }
+        });
+    });
+    </script>
+    
 </html>

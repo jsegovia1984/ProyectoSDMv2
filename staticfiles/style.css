@@ -1,23 +1,37 @@
 /* static/mi_aplicacion/styles.css */
+body{
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --background: rgb(240,240,240);
+    --foreground: rgb(42, 80, 110);
+  }
+  
+
+.head{
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
 
 .app {
     width: 100vw;
-    background-color: #a01616;
+    height: 1000vh;
+    /* background-color: rgb(240, 240, 240); */
+    background-color: var(--background);
     margin: 0;
-    padding: 20px;
+    padding: 0;
     
 }
 
-.cabecera{
-    width: 100vw;
-    height: 20vh;
-    background-color: #3f5f9b;
-    margin: 0;
-    
-    display: flex;
-    flex-direction: row;
-    
+h1{
+    color:var(--foreground);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 40px;
 }
+
+
 
 table{
     display: flex;
@@ -25,22 +39,130 @@ table{
     align-content: baseline;
     
     margin: 20px;
+    
     caption{
         margin: 20px;
         text-align: left;
         color: teal;
         font-size: 30px;
     }
+
     td{
         
+        height: 30px;
+        color: rgb(2, 2, 2);
         font-size: 15px;
+        text-align: center;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        .enlace{
+            font-size: 17px;
+            color: #f7752a;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .enlace:hover{
+            color: #ad3160;
+        }
+        .enlace:active{
+            color: rgb(240, 240, 240);
+            background-color: #f7752a;
+            width: 400px;
+        }
+        
     }
     tr:nth-child(odd){                      /*Color filas impares*/
-        background-color: antiquewhite;
-        color: teal;
+        background-color: rgb(164, 164, 164);
     }
     tr:nth-child(even){                     /*Color filas pares*/
-        background-color: teal;
-        color: antiquewhite;
+        background-color: rgb(200, 200, 200);
     }
+    .acciones{
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        align-content: center;
+    }
+}
+
+th{
+    width: 100vw;
+    font-size: 17px;
+    color: rgb(240, 240, 240);
+    font-weight: lighter;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color:rgb(42, 80, 110);
+    border: none;
+}
+
+
+.btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    margin: 3px;
+    width: 25px;
+    height: 25px;
+    background-color: #f7752a;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: lighter;
+    text-decoration: none;
+    
+}
+
+
+.btn:hover {
+    background-color: #c0392b;
+}
+.btn-flotante {
+    width: 40px;
+    height: 40px;
+	color: #ffffff; /* Color del texto */
+	border-radius: 60%; /* Borde del boton */
+	background-color: #aa0d0d; /* Color de fondo */
+	padding: 10px; /* Relleno del boton */
+	position: fixed;
+	bottom: 40px;
+	right: 40px;
+	transition: all 300ms ease 0ms;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+}
+.btn-flotante:hover {
+	background-color: rgb(42, 80, 110); /* Color de fondo al pasar el cursor */
+	box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+	transform: translateY(-7px);
+}
+
+
+.btn-atras {
+    width: 40px;
+    height: 40px;
+	border-radius: 60%; /* Borde del boton */
+    margin: 0px 100px 0px 20px;
+	padding: 10px; /* Relleno del boton */
+    img{
+        margin-top: 20px;
+    }
+	
+}
+
+form .filtro-label{
+    color:var(--foreground);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 25px;
+}
+form .filtro-opcion{
+    font-size: 15px;
+    color:var(--foreground);
+    background-color: var(--background);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 5px;
+    border: solid 1px rgb(42, 80, 110);
 }

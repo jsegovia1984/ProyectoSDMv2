@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Flotas</title>
+</head>
+<body class="app">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Aseguradoras</h1>
+
+    
+    <table>      
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">E-mail</th>      
+                <th scope="col">Dirección</th>      
+
+            </tr>
+            {% for Aseguradora in Aseguradoras %}
+            <tr>
+                <td>{{ Aseguradora.nombre }}</td>
+                <td>{{ Aseguradora.telefono }}</td>
+                <td>{{ Aseguradora.email }}</td>
+                <td>{{ Aseguradora.direccion }}</td>
+
+
+                <td class="acciones">
+                    {% if Aseguradora.id %}
+                    <form method="post" action="{% url 'eliminar_aseguradoras' Aseguradora.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    <form method="get" action="{% url 'editar_aseguradoras' Aseguradora.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    {% else %}
+                    
+                    <p>ID no válido</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+    <a href="{% url 'agregar_aseguradoras' %}" class="btn-flotante"><img src="{% static 'operacion/img/agregar.svg' %}"></a>
+    
+</body>
+</html>

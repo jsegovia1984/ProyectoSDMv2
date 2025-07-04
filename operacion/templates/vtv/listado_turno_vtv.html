@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+    
+
+    <title>Listado de Turnos VTV </title>
+    
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+    
+    
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Turnos de VTV </h1>
+    <table>
+            <tr>
+                <th>Automóvil</th>
+                <th>Fecha del Turno</th>
+                <th>Lugar de Verificación</th>
+                <th>Comentarios</th>
+            </tr>
+            {% for turno in turnos_vtv %}
+                <tr>
+                    <td>{{ turno.auto.patente }}</td>
+                    <td>{{ turno.fecha_turno|date:"d/m/Y H:i" }}</td>
+                    <td>{{ turno.lugar_verificacion }}</td>
+                    <td>{{ turno.comentarios|default:"Sin comentarios" }}</td>
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_turno' turno.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_turno' turno.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
+                    </td>
+                </tr>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay turnos pendientes</td>
+                </tr>
+            {% endfor %}
+    </table>
+    <a href="{% url 'agregar_turno_vtv' %}" class="btn-flotante"><img src="{% static 'operacion/img/agregar.svg' %}"></a>
+</body>
+</html>

@@ -1,0 +1,57 @@
+
+<!-- templates/mi_template.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Listado de Clientes</title>
+</head>
+<body class="app">
+    <div class="head">{% include 'cabecera.html' %}
+        {% include 'bnav.html' %}</div>
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Listado de servicios</h1>
+    <table>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+
+
+            </tr>
+        
+            {% for servicio in servicios %}
+                <tr>
+                    <td>{{ servicio.nombre }}</td>
+                    <td>{{ servicio.descripcion }}</td>
+
+                    <td class="acciones">
+                        <form method="post" action="{% url 'eliminar_servicios' servicio.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        <form method="get" action="{% url 'editar_servicios' servicio.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
+                        
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No hay servicios registrados.</td>
+                </tr>
+            {% endfor %}
+        
+    </table>
+    <a href="{% url 'agregar_servicios' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+        <form action="{% url 'agregar_servicios' %}" method="get">
+            {% csrf_token %}
+         </form>
+    </a>
+</body>
+</html>

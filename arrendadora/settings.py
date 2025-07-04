@@ -16,6 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -28,11 +29,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
  
+# Archivos multimedia (imágenes, videos, etc.)
+MEDIA_URL = '/media/'  # URL base para los archivos multimedia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Carpeta donde se almacenan
 
 # Application definition
+SITE_ID = 1  # El ID del sitio que configuraste en el panel de administración
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

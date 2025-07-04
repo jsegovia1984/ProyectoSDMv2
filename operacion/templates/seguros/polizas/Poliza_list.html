@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Polizas</title>
+</head>
+<body class="app">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    <a href="{% url 'home' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Pólizas</h1>
+    <table>      
+            <tr>
+                
+                <th scope="col">Aseguradora</th>
+                <th scope="col">Número de póliza</th>
+                <th scope="col">Fecha de inicio</th>      
+                <th scope="col">Fecha de fin</th>      
+                <th scope="col">Cobertura</th>      
+                <th scope="col">Activa</th>
+
+            </tr>
+            {% for poliza in polizas  %}
+            <tr>
+                
+                <td>{{ poliza.aseguradora }}</td>
+                <td>{{ poliza.numero_poliza }}</td>
+                <td>{{ poliza.fecha_inicio }}</td>
+                <td>{{ poliza.fecha_fin }}</td>
+                <td>{{ poliza.cobertura }}</td>
+                <td>
+                    {% if poliza.activa %}
+                        <img src="{% static 'operacion/img/check.svg' %}" alt="Habilitada">
+                    {% else %}
+                        <img src="{% static 'operacion/img/cancel.svg' %}" alt="No Habilitada">
+                        
+                    {% endif %}
+                </td>
+
+                <td class="acciones">
+                    {% if poliza.id %}
+                    <form method="post" action="{% url 'eliminar_poliza' poliza.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    <form method="get" action="{% url 'editar_poliza' poliza.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                    </form>
+                    {% else %}
+                    
+                    <p>ID no válido</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+    <a href="{% url 'agregar_poliza' %}" class="btn-flotante"><img src="{% static 'operacion/img/agregar.svg' %}"></a>
+    
+</body>
+</html>

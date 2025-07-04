@@ -1,0 +1,188 @@
+:root {
+    --background: rgb(240,240,240);
+    --foreground: rgb(42, 80, 110);
+  }
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: flex-end;
+}
+
+.head{
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+h1{
+    color:var(--foreground);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 20px;
+}
+
+.btn {
+    background-color: #f7752a;
+    
+    border: none;
+    margin: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+        color: white;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: lighter;
+        text-decoration: none;
+    
+}
+.btn:hover {
+    background-color: #c0392b;
+}
+
+.btn-atras {
+    width: 40px;
+    height: 40px;
+	border-radius: 60%; /* Borde del boton */
+    margin: 0px 100px 0px 20px;
+	padding: 10px; /* Relleno del boton */
+    img{
+        margin-top: 20px;
+    }
+	
+}
+.bloque{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+    .bloque-accion{
+        background-color: transparent;
+        margin: 5px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-content: center;
+    }
+ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: left;
+    padding: 10px;
+    margin-top: -16px;
+    width: 100vw;
+    background-color: rgb(42, 80, 110, 0.7);
+    li{
+        list-style-type: none;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: rgb(240, 240, 240);
+        font-size: 17px;
+    }
+}
+}
+
+/* HISTORICO */
+
+h2{
+    color:rgb(42, 80, 110);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 20px;
+}
+
+table{
+    display: flex;
+    flex-direction: column;
+    align-content: baseline;
+    
+    margin: 20px;
+    
+    caption{
+        margin: 20px;
+        text-align: left;
+        color: teal;
+        font-size: 30px;
+    }
+
+    td{
+        
+        height: 30px;
+        color: rgb(2, 2, 2);
+        font-size: 15px;
+        text-align: center;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        .enlace{
+            color: #c0392b;
+            text-decoration: none;
+        }
+        .enlace:hover{
+            color: rgb(192, 57, 43,0.7);
+        }
+        .enlace:active{
+            color: rgb(240, 240, 240);
+            background-color: #f7752a;
+            width: 400px;
+        }
+        
+    }
+    tr:nth-child(odd){                      /*Color filas impares*/
+        background-color: rgb(164, 164, 164);
+    }
+    tr:nth-child(even){                     /*Color filas pares*/
+        background-color: rgb(200, 200, 200);
+    }
+    .acciones{
+        background-color: transparent;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        align-content: center;
+    }
+}
+
+th{
+    width: 100vw;
+    font-size: 15px;
+    color: rgb(240, 240, 240);
+    font-weight: lighter;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color:rgb(42, 80, 110);
+    border: none;
+}
+
+
+form .filtro-label{
+    color:rgb(42, 80, 110);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 25px;
+}
+form .filtro-opcion{
+    font-size: 15px;
+    color:var(--foreground);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 5px;
+    border: solid 1px var(--foreground); 
+}
+.filtro-fecha input{
+    font-size: 15px;
+    padding: 5px;
+    margin-top: 5px;
+    background-color: var(--background);
+    color: var(--foreground);
+    border: 1px solid var(--foreground);
+}
+.filtro-fecha button{
+    height: 30px;
+    font-size: 15px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #f7752a;
+    color: rgb(240, 240, 240);
+    border: none;
+}

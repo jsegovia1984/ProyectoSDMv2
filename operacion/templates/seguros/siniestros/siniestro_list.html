@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>Siniestros</title>
+</head>
+<body class="app">
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    <a href="{% url 'home' %}" class="btn-atras">
+        <img src="{% static 'operacion/img/atras.svg' %}">
+    </a>
+
+    <h1>Siniestros</h1>
+
+    <table>      
+        <tr>
+            <th scope="col">Vehículo</th>
+            <th scope="col">Tipo de Siniestro</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Fecha</th>      
+            <th scope="col">Ubicación</th>      
+            <th scope="col">Severidad</th>      
+            <th scope="col">Costo Estimado</th>
+            <th scope="col">Cobertura de Seguro</th>
+            <!-- <th scope="col">Acciones</th> -->
+        </tr>
+
+        {% for siniestro in siniestros %}
+        <tr>
+            <td>{{ siniestro.vehiculo }}</td>
+            <td>{{ siniestro.tipo }}</td>
+            <td>{{ siniestro.descripcion }}</td>
+            <td>{{ siniestro.fecha|date:"Y-m-d" }}</td>
+            <td>{{ siniestro.ubicacion }}</td>
+            <td>{{ siniestro.get_severidad_daños_display }}</td>
+            <td>${{ siniestro.costo_estimado|default:"-" }}</td>
+            <td>
+                {% if siniestro.cobertura_seguro %}
+                    <img src="{% static 'operacion/img/check.svg' %}" alt="Sí cubierto">
+                {% else %}
+                    <img src="{% static 'operacion/img/cancel.svg' %}" alt="No cubierto">
+                {% endif %}
+            </td>
+            <td class="acciones">
+                <form method="post" action="{% url 'eliminar_siniestro' siniestro.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">
+                        <img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt="Eliminar">
+                    </button>
+                </form>
+                <form method="get" action="{% url 'editar_siniestro' siniestro.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">
+                        <img src="{% static 'operacion/img/editar_blanco.svg' %}" alt="Editar">
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'agregar_siniestro' %}" class="btn-flotante">
+        <img src="{% static 'operacion/img/agregar.svg' %}">
+    </a>
+    
+</body>
+</html>

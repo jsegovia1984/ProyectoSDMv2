@@ -1,0 +1,113 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.bnav{
+    width: 100vw;
+    background-color:teal;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+    a{
+        color: rgb(240,240,240);
+        font-size: 20px;
+        text-decoration: none;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    a:active{
+        color: rgb(240,240,240,0.5);
+    }
+}
+
+
+
+/* Estilo básico para el menú de navegación */
+
+
+.bnav .opciones {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+}
+.bnav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.bnav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.bnav a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.bnav a:hover {
+    background-color: #575757;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo para el dropdown */
+.dropdown {
+    position:relative;
+    display: inline-block;
+}
+
+/* Estilo para el botón del dropdown */
+.dropbtn {
+    color: white;
+    padding: 10px 15px;
+    /* border-radius: 5px; */
+    cursor: pointer;
+}
+
+/* Contenido del dropdown (oculto por defecto) */
+
+.dropdown-content {
+    display: none; /* Esconde el contenido por defecto */
+    position: absolute;
+    top: 140%; /* Hace que el dropdown se despliegue justo debajo del botón */
+    left: 0;
+    background-color: rgb(0, 128, 128);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    /* border-radius:  0 0 5px 5px; */
+    
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #575757;
+    position: relative;
+    border-radius: 0;
+}
+
+
+
+/* Mostrar el dropdown cuando el mouse pasa por encima */
+.dropdown:hover .dropdown-content {
+    display: block;
+    position: absolute;
+
+}

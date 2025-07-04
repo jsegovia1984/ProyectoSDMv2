@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style_detalle.css' %}">
+    <title>Detalle del Automóvil</title>
+</head>
+<body>
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    
+    <a href="{% url 'listado_automoviles' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Detalle del Automóvil <br> {{ auto.marca }} {{ auto.modelo }} ({{ auto.patente }}) - Flota {{auto.flota_id}}</h1>
+    <article class="bloque">
+            <ul>
+                <li><strong>Patente:</strong> {{ auto.patente }}</li>
+                <li><strong>Marca/Modelo:</strong> {{ auto.marca }}</li>
+                <li><strong>Año:</strong> {{ auto.anio }}</li>
+            </ul>
+            <ul>
+                <li><strong>Kilometraje:</strong> {{ auto.kilometraje }} km</li>
+                <li><strong>Nº Chasis:</strong> {{ auto.numero_chasis }}</li>
+                <li><strong>Nº Motor:</strong> {{ auto.numero_motor }}</li>
+                <li><strong>VTV:</strong> {{ auto.vtv }}</li>
+            </ul>
+            <ul>
+                <li><strong>Póliza:</strong> {{ auto.poliza }}</li>
+                <li><strong>Titular:</strong> {{ auto.titular }}</li>
+                <li><strong>Último servicio:</strong> {% if auto.fecha_ultimo_servicio %}
+                    {{ auto.fecha_ultimo_servicio }}
+                    {% else %}
+                    <p>Sin informar</p>
+                    {% endif %}
+                </li>
+                <li><strong>Último siniestro:</strong> {% if auto.fecha_ultimo_siniestro %}
+                    {{ auto.fecha_ultimo_siniestro }}
+                    {% else %}
+                    <p>Sin informar</p>
+                    {% endif %}
+                    </li>
+            </ul>
+            <article class="bloque-accion">
+                <!-- <form method="post" action="{% url 'eliminar_automovil' auto.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
+                </form> -->
+                <form method="get" action="{% url 'editar_automovil' auto.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                </form>
+                
+            </article>
+    </article>
+
+    <!-- HISTORICO -->
+    <h2>Historial del Vehículo <br> {{ auto.marca }} {{ auto.modelo }}</h2>
+    
+    <table>      
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Observación</th>
+                <th scope="col">Estado</th>
+                <!-- <th scope="col">Vencimiento</th>       -->
+            </tr>
+            
+            {% for turno in turnos %}
+            <tr>
+                <td>{{ turno.fecha_turno|date:"d/m/Y H:i" }}</td> <!-- Ahora sí se mostrará la fecha -->
+                <td>{{ turno.comentarios|default:"Sin comentarios" }}</td>   
+                <td>{{ turno.estado }}</td>
+                <!-- <td>{{ turno.vencimiento|date:"d/m/Y" }}</td> -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No hay turnos registrados para este vehículo.</td>
+            </tr>
+            {% endfor %}
+    </table>
+    
+    
+    
+</body>
+</html>

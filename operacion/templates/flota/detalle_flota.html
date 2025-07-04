@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static './style.css' %}">
+    <title>Detalle de Flota</title>
+</head>
+<body>
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
+    
+    <a href="{% url 'listado_flota' %}" class="btn-atras"><img src="{% static 'operacion/img/atras.svg' %}"></a>
+    <h1>Detalle de Flota {{flota.id}}</h1>
+    <h2>Automóviles Asociados</h2>
+    <section class="tablas">
+        
+        <table class="tabla-flota">
+            <tr>
+                <th>Automóvil</th>
+                <th>Patente</th>
+            </tr>
+            {% for auto in automoviles_asociados %}
+            <tr>
+                <td>
+                    {{ auto.marca }} - {{ auto.modelo }} 
+                </td>
+                <td>
+                    {{ auto.patente }}
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>
+                  No hay automóviles asociados a esta flota.  
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    
+    
+    <!-- <form method="post" action="{% url 'asociar_automovil' pk=flota.id %}">
+        <h2>Automóviles Restantes</h2>
+        {% csrf_token %}
+        <label for="automovil_select">Selecciona un automóvil para asociar:</label>
+        <select name="automovil_id" id="automovil_select">
+            {% for auto in automoviles_restantes %}
+                <option value="{{ auto.id }}">{{ auto.marca }} - {{ auto.modelo }} (Patente: {{ auto.patente }})</option>
+            {% empty %}
+                <option disabled>No hay automóviles restantes.</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Asociar</button>
+    </form> -->
+</section>
+    
+    
+    
+</body>
+</html>

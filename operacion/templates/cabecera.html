@@ -5,19 +5,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static './style_cabecera.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style_cabecera.css' %}">
     <title>Document</title>
 </head>
 <body>
     <article class="cabecera">
         <article class="cont_img">
-           <img src="../img/neumaticos-nuevos-2.jpg" alt="auto"> 
+           <img src="{% static 'operacion/img/LOGO_SDM.png' %}">
         </article>
-        <article class="cont_titulo">
-            <h1>SDM</h1>
-        </article>
-        <article class="cont_login">
-            <a href="">Ingresar</a>
+        <article class="cont_login">            
+            <ul>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn"><img src="{% static 'operacion/img/menu.svg' %}" alt=""></a>
+                    <ul class="dropdown-content">
+                        {% if user.is_superuser %}
+                            <li><a href="{% url 'admin:index' %}">Panel de Administrador</a></li>
+                        {% endif %}
+                        
+                        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+
+                    </ul>                
+                </li>
+            </ul>
         </article>
         
     </article>

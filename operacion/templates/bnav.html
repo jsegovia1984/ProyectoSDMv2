@@ -6,16 +6,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style_bnav.css' %}">
     <title>Document</title>
 </head>
 <body>
-    
-    <button>Menú</button>
-        <div style="color: black;">
-            {% for opcion in opciones_menu %}
-                <a href="#">{{ opcion }}</a>
-            {% endfor %}
-        </div>
+    <nav class="bnav">
+        <ul class="opciones">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+
+            <!-- <li><a href="{% url 'listado_automoviles' %}">Automóviles</a></li> -->
+            <li><a href="{% url 'listado_clientes' %}">Clientes</a></li>
+            <li><a href="{% url 'listado_contrato' %}">Contratos</a></li>
+
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Vehículos</a>
+                <ul class="dropdown-content">
+                    <li><a href="{% url 'listado_automoviles' %}">Automóviles</a></li>
+                    <li><a href="{% url 'listado_flota' %}">Flotas</a></li>
+                    <li><a href="{% url 'titular_listado' %}">Titulares</a></li>
+                    <li><a href="{% url 'listado_siniestro' %}">Siniestros</a></li>
+
+                    <!-- Agregar otras opciones de VTV aquí si es necesario -->
+                </ul>                
+        </li>
+            
+            <li class="dropdown">
+                    <a href="#" class="dropbtn">VTV</a>
+                    <ul class="dropdown-content">
+                        <li><a href="{% url 'listado_turno_vtv' %}">Registrar Turnos</a></li>
+                        <li><a href="https://www.suvtv.com.ar/turnos/" target="_blank" rel="noopener noreferrer">Turnos CABA</a></li>
+                        <li><a href="https://portal.vtv.gba.gob.ar/cpanel/login" target="_blank" rel="noopener noreferrer">Turnos GBA</a></li>
+                        <!-- Agregar otras opciones de VTV aquí si es necesario -->
+                    </ul>                
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Seguros</a>
+                <ul class="dropdown-content">
+                    <li><a href="{% url 'aseguradoras_listado' %}">Aseguradoras</a></li>
+                    <li><a href="{% url 'listado_poliza' %}">Pólizas</a></li>
+   
+                    <!-- Agregar otras opciones de VTV aquí si es necesario -->
+                </ul>                
+           </li>
+   
+           
+            <!-- <li><a href="">Patentes</a></li> -->
+            <li><a href="{% url 'listado_infracciones' %}">Multas</a></li>
+
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Taller</a>
+                <ul class="dropdown-content">
+                    <li><a href="{% url 'listado_servicios' %}">Servicios</a></li>
+                    <li><a href="{% url 'listado_mantenimiento' %}">Mantenimiento</a></li>
+   
+                    <!-- Agregar otras opciones de VTV aquí si es necesario -->
+                </ul>                
+           </li>
+            <!-- <li><a href="{% url 'listado_flota' %}">Flota</a></li> -->
+
+        </ul>
         
+    </nav>
+    
 </body>
 </html>

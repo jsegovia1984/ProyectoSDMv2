@@ -5,16 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style_form.css' %}">
     <title>Agregar Cliente</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
 </head>
-<body>
+<body class="app">
+    <div class="head">
+        {% include 'cabecera.html' %}
+        {% include 'bnav.html' %}
+    </div>
+    
     <h1>Agregar Cliente</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Guardar</button>
+        <a href="{% url 'listado_clientes' %}">Cancelar</a>
     </form>
-    <a href="{% url 'listado_clientes' %}">Volver al listado</a>
 </body>
 </html>
