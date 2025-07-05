@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contrato de Arrendamiento de Automotor - {{ contrato.id }}</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; margin: 2cm; }
+        h1, h2, h3 { color: #333; margin-top: 1.5em; margin-bottom: 0.5em; }
+        h1 { font-size: 18pt; text-align: center; }
+        h2 { font-size: 14pt; }
+        h3 { font-size: 12pt; }
+        p { margin-bottom: 0.5em; text-align: justify; }
+        .clausula-numero { font-weight: bold; margin-right: 5px; }
+        .firma-section { margin-top: 4cm; text-align: center; }
+        .firma-line { border-bottom: 1px solid black; width: 40%; display: inline-block; margin: 0 5%; }
+        .anexo { margin-top: 3cm; page-break-before: always; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>CONTRATO DE ARRENDAMIENTO DE AUTOMOTOR</h1>
+
+    <p>En la Ciudad {{ contrato.ciudad_firma }}, a los {{ dia_contrato }} días del mes de {{ mes_contrato }} de {{ anio_contrato }}, entre “{{ arrendador.razon_social }}” CUIT {{ arrendador.cuit }}, representada en este acto por su Presidente Gerente, {{ arrendador.representante_nombre }}, con Documento Nacional de Identidad N° {{ arrendador.representante_dni }}, con domicilio legal en {{ arrendador.domicilio }} .-///// en adelante llamado EL ARRENDADOR y por otra parte **{{ contrato.cliente.razon_social }}** “, CUIT: **{{ contrato.cliente.cuit }}**, representada en este acto por el Sr. **{{ contrato.cliente.representante_nombre|default:"[Representante No Definido]" }}** con DNI **{{ contrato.cliente.representante_dni|default:"[DNI No Definido]" }}**, con domicilio legal **{{ contrato.cliente.direccion }}**, en adelante llamado EL ARRENDATARIO, convienen celebrar el presente contrato marco que rige las condiciones generales de los contratos individuales a celebrarse por cada vehículo mencionado en el Anexo I ,contrato de arrendamiento de vehículo sin chofer sujeto a las siguientes clausulas:</p>
+
+    <h2>I.</h2>
+    <p><span class="clausula-numero">I.</span> El ARRENDADOR entrega al ARRENDATARIO en alquiler
+        {% if contrato.auto %}
+            un automotor, Marca **{{ contrato.auto.marca.marca.nombre }}** Modelo **{{ contrato.auto.marca.nombre }}**, Dominio **{{ contrato.auto.patente }}**
+        {% elif contrato.flota %}
+            **{{ contrato.flota.automovil_set.count }}** automotores de la flota "{{ contrato.flota.descripcion }}", Dominios de acuerdo a detalle adjunto
+        {% else %}
+            **[DETALLE_AUTOMOTORES_NO_ESPECIFICADO]**
+        {% endif %}
+        con rueda auxiliar. Equipo de auxilio mecánico (integrado por criquet y llave cruz) y las herramientas que son equipo de norma de fábrica para el citado vehículo y los correspondientes elementos de seguridad exigidos por las reglamentaciones en materia de tránsito vigentes, aceptándolo EL ARRENDATARIO en las condiciones normales, mecánicas y de carrocería consignadas en el inventario respectivo, mismo que se encuentra al final del presente documento y forma parte integrante del mismo, en lo sucesivo ANEXO I, todo lo cual es recibido por EL ARRENDATARIO de plena conformidad .</p>
+    <p>El vehículo podrá ser conducido por quienes autorice EL ARRENATARIO</p>
+
+    <h2>II.</h2>
+    <p><span class="clausula-numero">II.</span> El vehículo se encuentra en funcionamiento y con la carrocería, tapizado, neumáticos, accesorios tales en buenas condiciones CON uso.</p>
+
+    <h2>III.</h2>
+    <p><span class="clausula-numero">III.</span> Se deja expresa constancia que las piezas de las unidades están marcadas y que los únicos y exclusivos responsables y autorizados para su reemplazo es “{{ arrendador.razon_social }}” y talleres autorizados en la ZONA de Circulacion de las unidades .</p>
+
+    <h2>IV.</h2>
+    <p><span class="clausula-numero">IV.</span> El precio del arrendamiento A APLICAR EN CADA CONTRATO INDIVIDUAL, se establece para el primer MES , en la suma de $ {{ contrato.monto_inicial|floatformat:2 }} (Pesos {{ monto_letras }}) más iva mensual, Los MESES subsiguiente se actualiza la suma a pagar considerando la variación del índice IPC publicado por INDEC entre el mes anterior al de la firma del contrato y el mes anterior al de cada actualización.</p>
+    <p>EL ARRENDATARIO pagara a EL ARRENDADOR, por concepto de renta, por la unidad por mes, cuyo vencimiento operara todos los días 5 y en caso de resultar este inhábil, operara el vencimiento el siguiente día hábil.- Este pago es independiente de las prestaciones, sanciones e intereses que se pudiesen generar por el presente contrato EN CASO DE ATRASO EN EL PAGO se cobrara un interés equivalente a la tasa de descuento de cheques fijada por el Banco de la Nación Argentina calculada sobre la suma adeudada se cobrara intereses .</p>
+    <p>El ARRENDATARIO deberá realizar un máximo de 20.000 kilómetros mensuales, por vehículo, durante la vigencia del presente contrato, en caso de exceder dicho kilometraje deberá pagar una suma adicional de Pesos 1.000 por cada kilómetro excedido.</p>
+
+    <h2>V.</h2>
+    <p><span class="clausula-numero">V.</span> RESOLUCION ANTICIPADA: En el caso que El ARRENDATARIO decida resolver en forma anticipada el presente contrato y devolver el vehículo deberá notificar fehacientemente al ARRENDADOR con un plazo de anticipación de un mes y abonarle como indemnización la suma de dos (2) cánones locativos como penalidad por dicha resolución.</p>
+
+    <h2>VI.</h2>
+    <p><span class="clausula-numero">VI.</span> EL ARRENDATARIO con respecto a las multas de tránsito surgidas de las unidades en alquiler procederá de la siguiente manera: Una vez que EL ARRENDADOR reciba una infracción informara la misma en forma inmediata al ARRENDATARIO quien tendrá 20 dias para resolver y presentar la documentación de dicha resolución, caso contrario el ARRENDADOR abonará la misma y emitirá una Factura por el importe abonado para que en el plazo MENOR a 30 días EL ARRENDATARIO abone la misma.</p>
+
+    <h2>VII.</h2>
+    <p><span class="clausula-numero">VII.</span> EL ARRENDATARIO abonará mediante cheque a los 5 días de la fecha la factura, al ARRENDADOR el monto adeudado por el presente arrendamiento. El pago debe ser abonado completo e íntegramente</p>
+
+    <h2>VIII.</h2>
+    <p><span class="clausula-numero">VIII.</span> EL ARRENDATARIO deberá, en el momento de la devolución del vehículo objeto del presente, abonar todas las deudas contraídas con EL ARRENDADOR, por el este contrato de alquiler y demás cargos, si correspondieren, según las bases y tarifas consignadas en dicho instrumento por el término pactado.</p>
+    <p>A los fines de la oportuna restitución del vehículo se deja constancia de que el mismo será restituido al Arrendador en las condiciones físicas en que se encuentre. El Arrendador no podrá rehusar la recepción del vehículo alegando deficiencias en su estado ni ninguna otra circunstancia, obligándose a recibirlo en la oportunidad en que legalmente ello corresponda, cualquiera fuere su estado, pudiendo, en su caso, dejar sentadas sus objeciones en el acta de recepción que se firmará al efecto y efectuar los reclamos pertinentes.</p>
+    <p>En ningún caso se devengarán alquileres con posterioridad a la fecha en que el vehículo hubiese sido puesto a disposición del Arrendador, salvo que el Arrendatario incurriere en mora en el cumplimiento de dicha obligación.</p>
+
+    <h2>IX.</h2>
+    <p><span class="clausula-numero">IX.</span> Asimismo, EL ARRENDATARIO se hace cargo de las infracciones de tránsito que pudieran ser notificadas con posterioridad a la finalización del contrato, de aquellas multas que hayan sido cometidas durante la entrega de la unidad hasta su devolución al ARRENDADOR.</p>
+
+    <h2>X.</h2>
+    <p><span class="clausula-numero">X.</span> El plazo del arrendamiento se establece en el plazo de **{{ contrato.plazo_meses }}** MESES.</p>
+    <p>EL ARRENDATARIO retira el vehículo en el domicilio **{{ contrato.domicilio_retiro }}** de acuerdo detalle adjunto debiéndose reintegrar el vehículo al ARRENDADOR en el domicilio **{{ contrato.domicilio_devolucion }}** de a los **{{ contrato.plazo_dias_devolucion }}** días de retiro del vehículo de acuerdo al detalle adjunto, vencido el cual podrá EL ARRENDADOR solicitar el secuestro del mismo.</p>
+
+    <h2>XI.</h2>
+    <p><span class="clausula-numero">XI.</span> En caso de incumplimiento en el pago del precio, EL ARRENDATARIO pagara un interés equivalente a la tasa de descuento de cheques fijada por el Banco de la Nación Argentina calculada sobre la suma adeudada.</p>
+    <p>En el caso de incumplimiento de la obligación de devolución indicada en X precedente por parte de EL ARRANDATARIO pagará un interés del **{{ contrato.porcentaje_clausula_penal_diaria|floatformat:3 }}%** DIARIO COMO CLAUSULA PENAL, del monto total del arrendamiento.</p>
+
+    <h2>XII.</h2>
+    <p><span class="clausula-numero">XII.</span> La devolución del vehículo se realizará conforme los términos establecidos por el presente instrumento y en las mismas condiciones en que fue entregado, salvo los deterioros y desgastes normales producidos por el uso y el trascurso del tiempo EL ARRENDADOR realizara la reparación y/o sustitución con costo para EL ARRENDATARIO de aquellos elementos cuyo deterioro o desgaste exceda el que resulta de su uso y del transcurso del tiempo, siempre que hubiere dejado constancia de ello en el acta de restitución del vehículo.</p>
+
+    <h2>XIII.</h2>
+    <p><span class="clausula-numero">XIII.</span> La duración del arrendamiento surge del plazo establecido en la cláusula Decima no pudiendo EL ARRENDATARIO alegar la tácita reconducción o renovación automática de la locación por ningún motivo. EL ARRENDADOR, vencido el plazo del presente contrato podrá recuperarlo en cualquier momento y en la forma que estime más conveniente a sus intereses, sin que EL ARRENDATARIO pueda oponer excepción alguna. El plazo en exceso del término convenido será abonado por EL ARRENDATARIO de conformidad con las tarifas en vigencias para el alquiler del vehículo del ARRENDADOR.</p>
+
+    <h2>XIV.</h2>
+    <p><span class="clausula-numero">XIV.</span> EL ARRENDATARIO destinará el automóvil al transporte comercial en forma exclusiva, y dentro de la capacidad de pasajeros y de carga normal del vehículo y no podrá subarrendarlo, cederlo o disponer él en alguna forma sin el consentimiento expreso manifestado por escrito por el ARRENDADOR. Tampoco podrá conducir el vehículo fuera del territorio de la República de Argentina, salvo autorización escrita del ARRENDADOR.</p>
+
+    <h2>XV.</h2>
+    <p><span class="clausula-numero">XV.</span> En ningún caso y bajo ninguna circunstancia podrá EL ARRENDATARIO arrogarse el carácter de representante, agente o mandatario del ARRENDADOR. Ni podrá subarrendar el vehículo.</p>
+
+    <h2>XVI.</h2>
+    <p><span class="clausula-numero">XVI.</span> Le está totalmente prohibido a EL ARRENDATARIO, y/o al conductor designado por este - último, a conducir el automóvil arrendado en las siguientes condiciones:</p>
+    <p>a) En estado de ebriedad, cuando esté bajo los efectos de calmantes, tranquilizantes o narcóticos.</p>
+    <p>b) Sin licencia para conducir válida, expedida por las autoridades competentes y aceptada por las autoridades argentinas:</p>
+    <p>c) En la violación de las leyes y/o los reglamentos de tránsito respectivos.</p>
+
+    <h2>XVII.</h2>
+    <p><span class="clausula-numero">XVII.</span> EL ARRENDATARIO no podrá dedicar el automóvil arrendado a:</p>
+    <p>a) Usos distintos a los estipulados en este contrato, ni al transporte de pasajeros u otro tipo de servicio público.</p>
+    <p>b) Al transporte de cargas o bultos peligrosos.</p>
+    <p>c) A labores peligrosas o ilícitas.</p>
+    <p>d) A actos o hechos ilícitos.</p>
+    <p>e) A operaciones de remolque de cualquier clase.</p>
+    <p>f) A conducirlos a lugares distintos de los estipulados por el contrato.</p>
+    <p>g) A participar con él en carreras automovilísticas, pruebas de velocidad, regularidad, etc., o en certámenes de cualquier otro tipo, bajo ningún pretexto.</p>
+    <p>h) No podrá tampoco conducir el automóvil por rutas o caminos que no hayan sido declarados como expeditos al tránsito por las autoridades competentes.</p>
+
+    <h2>XVIII.</h2>
+    <p><span class="clausula-numero">XVIII.</span> EL ARRENDATARIO se constituye en depositario y custodio del vehículo, asumiendo todas las responsabilidades civiles y penales que tal condición implica, hasta tanto proceda a su devolución al ARRENDADOR.</p>
+
+    <h2>XIX.</h2>
+    <p><span class="clausula-numero">XIX.</span> Durante la vigencia del contrato, el ARRENDADOR se hará cargo de los mantenimientos preventivos. (Cambio de Aceite y filtro, Cambio de Filtro de aire y anti polen, Cambio de filtro de Nafta, pastillas de freno, bujes Tren delantero y Tren Trasero, bujías, escobillas limpiaparabrisas, medición de fluidos, El ARRENDADOR no se hará cargo de los daños producidos y del mantenimiento preventivo mencionado con anterioridad, por negligencia en el uso de la unidad y/o mal unidad y/o omisión de realizar los service respectivos y/o por no respetar las citaciones a verificación de la unidad.</p>
+
+    <h2>XX.</h2>
+    <p><span class="clausula-numero">XX.</span> EL ARRENDADOR realizara el mantenimiento preventivo mencionado en el clausula XIX (Cambio de Aceite y filtro, Cambio de Filtro de aire y antipolen, Cambio de filtro de Nafta, pastillas de freno, bujes Tren delantero y Tren Trasero, bujías, escobillas limpiaparabrisas, medición de fluidos.), sin costo adicional, excepto que el mismo sea causado por negligencia en el uso de la unidad y/o mal uso de la unidad y/o omisión de realizar los service respectivos y/o por no respetar las citaciones a verificación de la unidad.</p>
+
+    <h2>XXI.</h2>
+    <p><span class="clausula-numero">XXI.</span> Vencido el plazo del arrendamiento o locación, EL ARRENDATARIO debe devolver el vehículo arrendado en forma inmediata en el domicilio **{{ contrato.domicilio_devolucion }}**.</p>
+
+    <h2>XXII.</h2>
+    <p><span class="clausula-numero">XXII.</span> EL ARRENDATARIO es enteramente responsable mientras permanezca en la tenencia del automóvil de la guardia material y/o jurídica del mismo, debiendo resarcir a EL ARRENDADOR o a su compañía de seguros, los siguientes perjuicios:</p>
+    <p>a) Por cualquier daño a la propiedad causado al o por el vehículo arrendado, siempre que el mismo no fuese cubierto por la Compañía de Seguros y se trate de coberturas superiores a RC y se cederán los derechos a reclamar al tercero al ARRENDATARIO</p>
+    <p>b) Por los daños causados a terceras personas.</p>
+    <p>c) Por los daños causados a personas y/o bienes transportados en el automóvil arrendado, siempre que el mismo no fuese cubierto por la Compañía de Seguros y se cederán los derechos a reclamar al tercero al ARRENDATARIO</p>
+    <p>d) Por las violaciones que cometan o le imputen haber cometido contra los reglamentos de tránsito municipales, departamentales y/o estatales.</p>
+    <p>e) Por el daño moral que la culpa y/o negligencia del ARRENDATARIO causare a terceras personas.</p>
+    <p>f) Por no revisar el vehículo periódicamente en los niveles de Aceite, Líquido de Freno, Gasolina, Agua del radiador y presión de cubiertas.</p>
+    <p>g) Por no presentarse al turno de revisión del vehículo, siempre que sea en la zona de ubicación y uso del vehículo .</p>
+    <p>h) Responder por los daños que sufra el vehículo mientras el mismo se encuentre en posesión (siempre que el mismo no fuese cubierto por la Compañía de Seguros), por el pago de sanciones impuestas por cualquier autoridad en uso del vehículo.</p>
+    <p>I) Responder por hechos y actos ilícitos efectuados con el vehículo o dentro del mismo.</p>
+    <p>En todos los casos previos se entiende que el Arrendatario no asume responsabilidad anticipada por ninguno de los hechos o circunstancias relatados o cualesquiera otros, siendo su responsabilidad únicamente la que surja de su propia admisión luego de cada hecho, o de sentencia judicial.</p>
+
+    <h2>XXIII.</h2>
+    <p><span class="clausula-numero">XXIII.</span> EL ARRENDATARIO se compromete a dar cumplimiento a todas y cada una de estas cláusulas y acuerda que el incumplimiento de cualquiera de ellas dará lugar al ARRENDADOR a declarar rescindido el arrendamiento, previa intimación por **{{ contrato.dias_intimacion_incumplimiento }}** (quince) días para que EL ARRENDATARIO subsane el incumplimiento, quedando a cargo del primero todas y cada una de las obligaciones que ha asumido con la firma del pressente.</p>
+
+    <h2>XXIV.</h2>
+    <p><span class="clausula-numero">XXIV.</span> En caso de cualquier accidente, EL ARRENDATARIO deberá dar aviso inmediato al ARRENDADOR, y a la compañía de seguros, no pudiendo exceder el lapso para hacerlo de las **{{ contrato.horas_limite_denuncia_accidente }}** horas de ocurrido el mismo. EL ARENDATARIO debe denunciar el siniestro acompañando, de forma completa, bajo declaración jurada, los datos consignados en la denuncia que corresponda por el seguro contratado, asimismo debe aportar testigos, y fotos de los vehículos siniestrados, si los hubiere. Asimismo, en caso de incumplimiento del deber de denunciar el siniestro EL ARRENDATARIO se hará responsable de todos los daños y perjuicios que puedan surgir del siniestro no denunciado en la medida en que su responsabilidad sea admitida por EL ARRENDATARIO o declarada en sentencia judicial. Por regla el Arrendatario no sufrirá consecuencias por los siniestros que afecten el automotor y que se encuentren cubiertos por la póliza de seguros correspondiente, siempre que se trate de coberturas superiores a RC</p>
+
+    <h2>XXV.</h2>
+    <p><span class="clausula-numero">XXV.</span> Queda establecido que el ARRENDADOR no se responsabilizará por la pérdida y/o extravío de cualquier objeto, de cualquier naturaleza, ubicados o dejados en el automóvil arrendado. EL ARRENDADOR tampoco se responsabiliza por los daños que pueda sufrir el conductor del vehículo por cualquier motivo, exista o no negligencia, culpa o dolo del conductor o arrendatario.</p>
+
+    <h2>XXVI.</h2>
+    <p><span class="clausula-numero">XXVI.</span> EL ARRENDADOR no tiene vinculación laboral alguna con EL ARRENDATARIO, sus dependientes y/o con el conductor del vehículo.</p>
+
+    <h2>XXVII.</h2>
+    <p><span class="clausula-numero">XXVII.</span> EL ARRENDATARIO conviene que para toda diferencia y/o reclamo derivado de la presente, se somete a la jurisdicción de los Tribunales Judiciales de la Ciudad Autónoma de Buenos Aires renunciando a cualquier otra jurisdicción que pudiera corresponderle.</p>
+
+    <h2>XXVIII.</h2>
+    <p><span class="clausula-numero">XXVIII.</span> FRANQUICIAS EL ARRENDATARIO se compromete a abonar los siguientes valores en concepto de Franquicias por los eventos a continuación descriptos</p>
+    <ul>
+        <li>**{{ contrato.porcentaje_vuelco|floatformat:2 }}%** del valor de la unidad por vuelco según la revista INFOAUTO del mes del siniestro</li>
+        <li>En caso de robo la unidad será sustituida a **{{ contrato.dias_sustitucion_robo }}** días desde realizada la denuncia o se abonaran el alquiler del vehículo sustituto hasta que la Compañía de seguros liquide el siniestro</li>
+        <li>En caso de robo $ **{{ contrato.franquicia_robo_valor|floatformat:2 }}** + IVA ( VALOR A ACTUALIZAR POR IPC ) o la parte proporcional si el pago se realiza antes de cumplido los **{{ contrato.dias_pago_robo }}** días.</li>
+        <li>Se abonará el alquiler del vehículo sustituto hasta que la Compañía liquide el siniestro</li>
+        <li>Por daños por evento $ **{{ contrato.franquicia_danos_valor|floatformat:2 }}** + IVA ( VALOR A ACTUALIZAR POR IPC PUBLICADO POR EL INDEC )</li>
+        <li>Destrucción de airbag considerar valor de mercado al momento de reposición.</li>
+    </ul>
+    <p>siempre que el mismo no fuese cubierto por la Compañía de Seguros *Por favor considere que la tarifa puede ser revisada por consenso de parte dentro de los próximos **{{ contrato.meses_revision_tarifa }}** meses. En todos los casos descriptos, en los que los daños sean abonados por el ARRENDADOR, el ARRENDATARIO cederá los derechos para reclamar a los Terceros al ARRENDADOR</p>
+
+    <h2>XXIX.</h2>
+    <p><span class="clausula-numero">XXIX.</span> Leído que fue a las partes, y enterados de la totalidad de sus alcances legales, de conformidad, se firman 2 (Dos) ejemplares del mismo tenor y a un solo efecto, entregándose el vehículo a EL ARRENDATARIO.</p>
+
+    <div class="firma-section">
+        <p><span class="firma-line"></span></p>
+        <p><strong>EL ARRENDADOR</strong></p>
+        <p>{{ arrendador.razon_social }}</p>
+    </div>
+
+    <div class="firma-section">
+        <p><span class="firma-line"></span></p>
+        <p><strong>EL ARRENDATARIO</strong></p>
+        <p>{{ contrato.cliente.razon_social }}</p>
+    </div>
+
+    <div class="anexo">
+        <h2>ANEXO I</h2>
+        <h3>Detalle adjunto descripción de unidades a alquilar</h3>
+        {% if contrato.auto %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Dominio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ contrato.auto.marca.marca.nombre }}</td>
+                    <td>{{ contrato.auto.marca.nombre }}</td>
+                    <td>{{ contrato.auto.patente }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% elif contrato.flota %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Dominio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Itera sobre los automóviles asociados a la flota #}
+                {% for vehiculo in contrato.flota.automovil_set.all %}
+                <tr>
+                    <td>{{ vehiculo.marca.marca.nombre }}</td>
+                    <td>{{ vehiculo.marca.nombre }}</td>
+                    <td>{{ vehiculo.patente }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No se especificó un automóvil o flota para este contrato.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

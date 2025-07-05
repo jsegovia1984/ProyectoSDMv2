@@ -6,13 +6,20 @@ from .forms import AutomovilForm
 from django.contrib.auth import login, authenticate
 from .forms import CustomLoginForm, ClienteForm, TurnoVTVForm, FlotaForm, TitularForm,AseguradoraForm,PolizaForm,ServicioForm,MantenimientoForm
 from .forms import SiniestroForm,ContratoForm
-
+from .utils import numero_a_letras
 from django.contrib import messages
 from django.utils.dateparse import parse_date
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import io
+import datetime
+import locale # Import the locale module
 
 
 
@@ -53,6 +60,72 @@ def editar_contrato(request, pk):
     else:
         form = ContratoForm(instance=contrato)
     return render(request, 'contrato/editar_contrato.html', {'form': form})
+
+
+
+
+# @login_required # Uncomment if you are using it
+def generar_contrato(request, pk): # Using contrato_id as per our last discussion
+    # Set the locale to Spanish for date formatting
+    # The exact locale string might vary slightly by operating system:
+    # 'es_ES.UTF-8' for Linux/macOS, 'es_ES' for some systems, 'Spanish_Spain.1252' for Windows
+    try:
+        locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8') # Common for Linux/macOS
+    except locale.Error:
+        try:
+            locale.setlocale(locale.LC_TIME, 'es_ES') # Alternative for some Linux/macOS
+        except locale.Error:
+            try:
+                locale.setlocale(locale.LC_TIME, 'Spanish_Spain.1252') # For Windows
+            except locale.Error:
+                # Fallback if no specific Spanish locale is found
+                print("Warning: Could not set Spanish locale for date formatting.")
+
+
+    contrato = get_object_or_404(Contrato, pk=pk)
+
+    arrendador_data = {
+        'razon_social': "SOLUCIONES DE MOVILIDAD S.A",
+        'cuit': "30-71553750-4",
+        'representante_nombre': "Pablo Hector Confenti",
+        'representante_dni': "20.620.511",
+        'domicilio': "Gallo N° 1651 de la Ciudad Autónoma de Buenos Aires",
+    }
+
+    context = {
+        'contrato': contrato,
+        'arrendador': arrendador_data,
+        # Formateo de fecha para el inicio del contrato
+        'dia_contrato': contrato.fecha_contrato_firmado.day if contrato.fecha_contrato_firmado else '[DIA]',
+        # This will now use the Spanish locale
+        'mes_contrato': contrato.fecha_contrato_firmado.strftime('%B').upper() if contrato.fecha_contrato_firmado else '[MES]',
+        'anio_contrato': contrato.fecha_contrato_firmado.year if contrato.fecha_contrato_firmado else '[AÑO]',
+        'monto_inicial': contrato.monto_inicial,
+        'monto_letras': numero_a_letras(contrato.monto_inicial),
+    }
+
+    html_string = render_to_string('contrato/contrato.html', context) # Ensure this path is correct
+
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    pdf_file = html.write_pdf()
+
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    
+    filename_parts = [f"contrato_{pk}"]
+    if contrato.cliente:
+        filename_parts.append(contrato.cliente.razon_social.replace(" ", "_"))
+    if contrato.auto:
+        filename_parts.append(contrato.auto.patente)
+    elif contrato.flota:
+        filename_parts.append(contrato.flota.descripcion.replace(" ", "_"))
+
+    response['Content-Disposition'] = f'attachment; filename="{"_".join(filename_parts)}.pdf"'
+    
+    # IMPORTANT: Reset the locale to default or a known state after your operation
+    # This prevents side effects on other parts of your application.
+    locale.setlocale(locale.LC_TIME, '') # Resets to default system locale or 'C'
+    
+    return response
 
 
 ###########################################################################################################

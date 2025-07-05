@@ -20,7 +20,7 @@ from .views import advertencia_view
 
 # Redirigir errores 404 a la vista de advertencia
 
-from .views import listado_contrato,agregar_contrato,eliminar_contrato,editar_contrato
+from .views import listado_contrato,agregar_contrato,eliminar_contrato,editar_contrato,generar_contrato
 # En tu archivo urls.py
 from django.contrib.auth import views as auth_views
 
@@ -134,6 +134,9 @@ urlpatterns = [
     path('contrato/agregar/', agregar_contrato, name='agregar_contrato'),
     path('contrato/eliminar/<int:pk>/', eliminar_contrato, name='eliminar_contrato'),
     path('contrato/editar/<int:pk>/', editar_contrato, name='editar_contrato'),
+    path('contrato/generar/<int:pk>/', generar_contrato, name='generar_contrato'),
+
+    
 
     
 

@@ -47,6 +47,10 @@
                             {% csrf_token %}
                             <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
                         </form>
+                        <form method="get" action="{% url 'generar_contrato' contrato.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                        </form>
                         
                     </td>
                 </tr>

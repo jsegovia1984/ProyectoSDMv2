@@ -90,6 +90,7 @@ class Cliente(models.Model):
     email = models.CharField(max_length=50, verbose_name="E-mail", null=True, blank=True)
     visible = models.BooleanField(default=True)  # Campo de visibilidad
 
+
     def __str__(self):
         return f"{self.razon_social}"
     
@@ -332,6 +333,7 @@ class Contrato(models.Model):
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE)
     auto = models.ForeignKey('Automovil', on_delete=models.CASCADE, blank=True, null=True)
     flota = models.ForeignKey('Flota', on_delete=models.CASCADE, blank=True, null=True)
+    monto_inicial = models.FloatField()
     contrato_firmado = models.BooleanField(default=False)
     fecha_contrato_firmado = models.DateField(null=True, blank=True)
     facturacion = models.BooleanField(default=False, verbose_name="Facturación")
@@ -352,3 +354,16 @@ class notas(models.Model):
             ('alta', 'Alta')],
         default='media')
     titulo = models.CharField(max_length=255, verbose_name="Título de la nota")
+
+
+    
+class representante(models.Model):
+    cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100,blank=True, null=True)
+    dni = models.CharField(max_length=15,blank=True, null=True)
+    domicilio = models.CharField(max_length=255,blank=True, null=True)
+
+    def __str__(self):
+        return f"Contrato de {self.nombre} - {self.dni}"
+
+
