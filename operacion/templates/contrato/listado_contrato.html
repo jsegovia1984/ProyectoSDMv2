@@ -19,37 +19,55 @@
     <h1>Listado de contratos</h1>
     <table>
             <tr>
+                <th>Nº de Contrato</th>
                 <th>Cliente</th>
                 <th>Auto</th>
                 <th>Flota</th>
                 <th>Contrato firmado</th>
                 <th>Fecha de firma</th>
-                <th>Facturación</th>
+                <!-- <th>Facturación</th> -->
                 <!-- <th>Acciones</th> -->
 
             </tr>
         
             {% for contrato in contratos %}
                 <tr>  
+                    <td>
+                        <form method="post" action="{% url 'editar_contrato' contrato.pk %}">
+                            {% csrf_token %}
+                            {% if contrato.contrato_firmado %}
+                            {{ contrato.id|stringformat:"04d" }}
+                            {% else %}
+                            <a class="enlace" href="{% url 'editar_contrato' contrato.pk %}">{{ contrato.id|stringformat:"04d" }}</a>
+                            <!-- <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button> -->
+                            {% endif %}
+                        </form>
+                    </td>
                     <td>{{ contrato.cliente }}</td>
-                    <td>{{ contrato.auto }}</td>
+                    <td>{{ contrato.auto|default:"--" }}</td>
                     <td>{{ contrato.flota }}</td>
-                    <td>{{ contrato.contrato_firmado }}</td>
+                    <td>{% if contrato.contrato_firmado %}
+                        <img src="{% static 'operacion/img/check.svg' %}" alt="Firmado">
+                        {% else %}
+                        <img src="{% static 'operacion/img/cancel.svg' %}" alt="No Firmado">
+                        {% endif %}
+                    </td>
                     <td>{{ contrato.fecha_contrato_firmado }}</td>
-                    <td>{{ contrato.facturacion }}</td>
+                    <!-- <td>{% if contrato.facturacion %}
+                        <img src="{% static 'operacion/img/check.svg' %}" alt="Facturado">
+                        {% else %}
+                        <img src="{% static 'operacion/img/cancel.svg' %}" alt="No Facturado">
+                        {% endif %}
+                    </td> -->
                     <td class="acciones">
-                        <form method="post" action="{% url 'eliminar_contrato' contrato.pk %}">
-
+                        
+                        <form method="get" action="{% url 'eliminar_contrato' contrato.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn"><img src="{% static 'operacion/img/eliminar_blanco.svg' %}" alt=""></button>
                         </form>
-                        <form method="get" action="{% url 'editar_contrato' contrato.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
-                        </form>
                         <form method="get" action="{% url 'generar_contrato' contrato.id %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn"><img src="{% static 'operacion/img/editar_blanco.svg' %}" alt=""></button>
+                            <button type="submit" class="btn"><a href="{% url 'generar_contrato' contrato.id %}" target="_blank" rel="noopener noreferrer"><img src="{% static 'operacion/img/ojo-abierto_B.png' %}" alt=""></a></button>
                         </form>
                         
                     </td>

@@ -33,6 +33,54 @@
         <div class="cont-principal">
             <a id="home">
             <section>
+                <div class="contenedor-auto">
+                    {% for auto in autos %}
+                        <article class="art-auto">
+                            <div class="card-body-auto">
+                                <img class="img-nota" src="{% static 'operacion/img/auto.png' %}" alt="">
+                                <h5 class="card-title-auto">
+                                     {{ auto.patente }}
+                                </h5>
+                                <!-- ICONO ALERTA -->
+                                <button type="button" class="btn-alerta" data-bs-toggle="modal" data-bs-target="#notaModal">
+                                    
+                                        {% if auto.vtv.estado.estado  == 'Vencida' %}
+                                            <img class="img-alerta" src="{% static 'operacion/img/red-circle.svg' %}" alt="">
+                                        {% elif auto.vtv.estado.estado  == 'Observada' %}
+                                            <img class="img-alerta" src="{% static 'operacion/img/orange-circle.svg' %}" alt="">
+                                        {% else %}
+                                            <img class="img-alerta" src="{% static 'operacion/img/green-circle.svg' %}" alt="">
+                                        {% endif %} 
+                                      
+                                </button>
+                                <!-- POPUP DETALLE -->
+                                <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="popup-alerta">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalLabel">{{ auto.marca }} - {{ auto.patente }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                
+                                                <p>VTV: </p>
+                                                <strong>{{ auto.vtv.estado.estado }}</strong>
+                                            
+                                                <p>Servicio: </p>
+                                                <strong>{{ auto.fecha_ultimo_servicio }}</strong>
+                                            
+                                                <p>Multas: </p>
+                                                <strong></strong>
+                                                    
+                                                 
+                                            </div>
+
+                                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+            <section>
                 <h1>Notas</h1>
                 <hr>
                 <!-- REFERENCIAS -->
@@ -49,9 +97,9 @@
                             <div class="card-body">
                                 <h5 class="card-title">
                                     <p class="card-text-icon">
-                                    {% if nota.prioridad  == 'alta' %}
+                                    {% if nota.prioridad  == 1 %}
                                         <img class="img-nota" src="{% static 'operacion/img/red-circle.svg' %}" alt="">
-                                    {% elif nota.prioridad == 'media' %}
+                                    {% elif nota.prioridad == 2 %}
                                         <img class="img-nota" src="{% static 'operacion/img/orange-circle.svg' %}" alt="">
                                     {% else %}
                                         <img class="img-nota" src="{% static 'operacion/img/green-circle.svg' %}" alt="">
@@ -70,12 +118,13 @@
                             {% else %}
                             <p>ID no válido</p>
                             {% endif %}
-                                </article>
-                            {% endfor %}
-                            <button type="button" class="btn-nota" data-bs-toggle="modal" data-bs-target="#notaModal">
-                                <img src="{% static 'operacion/img/agregar.svg' %}">
-                            </button>
-                        </div>
+                            
+                        </article>
+                    {% endfor %}        
+                    <button type="button" class="btn-nota" data-bs-toggle="modal" data-bs-target="#notaModal">
+                        <img src="{% static 'operacion/img/agregar.svg' %}">
+                    </button>
+                </div>
                 <!-- AGREGAR NOTA -->
                 <div class="modal fade" id="notaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -102,9 +151,9 @@
                                     <div class="mb-3">
                                         <label for="prioridad" class="form-label">Prioridad</label>
                                         <select class="form-select" id="prioridad" name="prioridad">
-                                            <option value="baja">Baja</option>
-                                            <option value="media" selected>Media</option>
-                                            <option value="alta">Alta</option>
+                                            <option value=3>Baja</option>
+                                            <option value=2 selected>Media</option>
+                                            <option value=1>Alta</option>
                                         </select>
                                     </div>
                                     <button class="btn-popup" type="submit" >Guardar</button>

@@ -335,7 +335,7 @@ class Contrato(models.Model):
     flota = models.ForeignKey('Flota', on_delete=models.CASCADE, blank=True, null=True)
     monto_inicial = models.FloatField()
     contrato_firmado = models.BooleanField(default=False)
-    fecha_contrato_firmado = models.DateField(null=True, blank=True)
+    fecha_contrato_firmado = models.DateField()
     facturacion = models.BooleanField(default=False, verbose_name="Facturación")
 
     def __str__(self):
@@ -347,13 +347,22 @@ class Contrato(models.Model):
 class notas(models.Model):
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
     fecha = models.DateTimeField(verbose_name="Fecha y Hora de la nota")
-    prioridad = models.CharField(max_length=50,
+    prioridad = models.IntegerField(
         choices=[
-            ('baja', 'Baja'),
-            ('media', 'Media'),
-            ('alta', 'Alta')],
-        default='media')
+            (3, 'Baja'),
+            (2, 'Media'),
+            (1, 'Alta')],
+        default=2)
     titulo = models.CharField(max_length=255, verbose_name="Título de la nota")
+
+    class Meta:
+        # Define the default ordering for all Nota queries
+        # -fecha: Orders by date in descending order (most recent first)
+        # prioridad: Orders by priority in ascending order (1=Alta, 2=Media, 3=Baja)
+        ordering = ['prioridad', 'fecha']
+
+    def __str__(self):
+        return self.titulo
 
 
     

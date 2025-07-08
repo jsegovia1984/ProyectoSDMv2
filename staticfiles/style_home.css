@@ -44,7 +44,7 @@ body{
                 font-family: Verdana, Geneva, Tahoma, sans-serif;
             }
             a:hover{
-                border-left: solid 4px #f7752a;
+                border-left: solid 4px rgb(247, 117, 42);
             }
             a:active{
                 width: 100%;

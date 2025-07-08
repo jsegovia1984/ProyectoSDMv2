@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Automovil, Cliente , Servicio
 from .models import Turno_VTV
 from .models import Flota,Titular,Aseguradora,PolizaSeguro,HistorialMantenimiento,Siniestro,Infracciones,Contrato
-
+from django.core.exceptions import ValidationError
 
 class InfraccionesForm(forms.ModelForm):
     class Meta:
@@ -169,3 +169,26 @@ class ContratoForm(forms.ModelForm):
         self.fields['auto'].queryset = Automovil.objects.filter(visibilidad=True)
         self.fields['cliente'].queryset = Cliente.objects.filter(visible=True)
         self.fields['flota'].queryset = Flota.objects.filter(disponible=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        auto = cleaned_data.get('auto')
+        flota = cleaned_data.get('flota')
+        # Lógica de validación para exclusividad
+        if auto and flota:
+            # Si ambos campos tienen un valor, lanzar un error de validación
+            raise ValidationError(
+                "No puedes seleccionar un Auto y una Flota al mismo tiempo. Debes elegir solo uno.",
+                code='ambos_seleccionados'
+            )
+        #elif not auto and not flota:
+            # Si ninguno de los campos tiene un valor, lanzar un error de validación
+            # Esto asume que al menos uno de los dos debe ser seleccionado.
+            # Si permites que ambos sean nulos, comenta o elimina esta parte.
+            #raise ValidationError(
+             #   "Debes seleccionar un Auto o una Flota para el contrato.",
+             #   code='ninguno_seleccionado'
+            #)
+
+        # Si la validación pasa, devuelve los datos limpios
+        return cleaned_data

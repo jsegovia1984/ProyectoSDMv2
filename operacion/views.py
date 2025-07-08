@@ -23,6 +23,7 @@ import locale # Import the locale module
 
 
 
+
 ###########################################################################################################
 # CONTRATO
 ###########################################################################################################
@@ -102,6 +103,7 @@ def generar_contrato(request, pk): # Using contrato_id as per our last discussio
         'anio_contrato': contrato.fecha_contrato_firmado.year if contrato.fecha_contrato_firmado else '[AÑO]',
         'monto_inicial': contrato.monto_inicial,
         'monto_letras': numero_a_letras(contrato.monto_inicial),
+        'ciudad_firma': 'Ciudad de Vicente López',
     }
 
     html_string = render_to_string('contrato/contrato.html', context) # Ensure this path is correct
@@ -111,15 +113,15 @@ def generar_contrato(request, pk): # Using contrato_id as per our last discussio
 
     response = HttpResponse(pdf_file, content_type='application/pdf')
     
-    filename_parts = [f"contrato_{pk}"]
+    filename_parts = [f"Contrato_{pk}"]
     if contrato.cliente:
         filename_parts.append(contrato.cliente.razon_social.replace(" ", "_"))
-    if contrato.auto:
-        filename_parts.append(contrato.auto.patente)
-    elif contrato.flota:
-        filename_parts.append(contrato.flota.descripcion.replace(" ", "_"))
+    #if contrato.auto:
+    #    filename_parts.append(contrato.auto.patente)
+    #elif contrato.flota:
+    #    filename_parts.append(contrato.flota.descripcion.replace(" ", "_"))
 
-    response['Content-Disposition'] = f'attachment; filename="{"_".join(filename_parts)}.pdf"'
+    response['Content-Disposition'] = f'inline; filename="{"_".join(filename_parts)}.pdf"'
     
     # IMPORTANT: Reset the locale to default or a known state after your operation
     # This prevents side effects on other parts of your application.
@@ -234,7 +236,8 @@ def editar_siniestro(request, pk):
 @login_required
 def home(request):
     N = notas.objects.all()
-    return render(request, 'index.html', {'notas': N})
+    A = Automovil.objects.all()
+    return render(request, 'index.html', {'notas': N,'autos':A})
     
 
 @login_required
